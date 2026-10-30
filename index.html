@@ -1,0 +1,639 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Grevo</title>
+<meta name="description" content="Erfolge, Ziele und Kudos festhalten, damit am Jahresende nichts fehlt.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='28' fill='%23dbfb5f'/><text x='50' y='70' font-size='60' text-anchor='middle' font-family='Arial' font-weight='800' fill='%230e0e10'>G</text></svg>">
+<style>
+/* Gleiches Design wie die Familienkasse */
+:root {
+  --bg: #e9e7e8; --surface: #fafafa; --surface-2: #efedee; --fg: #0e0e10; --muted: #5f5b60; --line: #dcd8db;
+  --ink: #0e0e10; --on-ink: #ffffff; --on-ink-2: rgba(255,255,255,.14);
+  --blue: #3b97e3; --pink: #e2559f; --pink-soft: #fce1ef; --lime: #dbfb5f; --lime-soft: #eefbc0; --on-lime: #0e0e10;
+  --ok: #23864d; --warn: #c25a12;
+  --font: "Outfit", "Helvetica Neue", Arial, sans-serif; --r: 28px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #121113; --surface: #1d1c1f; --surface-2: #2a282c; --fg: #f4f3f4; --muted: #a8a4a9; --line: #343136;
+  --ink: #2b2930; --blue: #72b9f2; --pink: #f17cbc; --pink-soft: #3d2231; --lime-soft: #33391a; --ok: #6fd498; --warn: #f3a463; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #121113; --surface: #1d1c1f; --surface-2: #2a282c; --fg: #f4f3f4; --muted: #a8a4a9; --line: #343136;
+  --ink: #2b2930; --blue: #72b9f2; --pink: #f17cbc; --pink-soft: #3d2231; --lime-soft: #33391a; --ok: #6fd498; --warn: #f3a463; color-scheme: dark }
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--font); font-size: 15px; line-height: 1.45; -webkit-font-smoothing: antialiased; }
+h1, h2, h3 { margin: 0; letter-spacing: -.015em; text-wrap: balance; }
+h2 { font-size: 1.1rem; font-weight: 700; } h3 { font-size: 1rem; font-weight: 600; }
+p { margin: 0; }
+button, input, select, textarea { font: inherit; color: inherit; }
+.hl-b { color: var(--blue); } .hl-p { color: var(--pink); }
+.label { font-size: .72rem; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); font-weight: 600; }
+.muted { color: var(--muted); font-size: .88rem; }
+.good { color: var(--ok); }
+
+.app { max-width: 32rem; margin-inline: auto; padding: 14px max(16px, env(safe-area-inset-right)) calc(96px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left)); display: flex; flex-direction: column; gap: 14px; }
+.top { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.top h1 { font-size: 1.8rem; font-weight: 800; letter-spacing: -.03em; }
+.topacts { display: flex; gap: 8px; align-items: center; }
+.view { display: flex; flex-direction: column; gap: 14px; }
+.vhead h2 { font-size: 1.5rem; font-weight: 800; }
+.grid { display: grid; gap: 14px; grid-template-columns: minmax(0, 1fr); }
+.card { background: var(--surface); border-radius: var(--r); padding: 20px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.row { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+.btn { border: 0; border-radius: 999px; padding: 10px 18px; background: var(--lime); color: var(--on-lime); font-weight: 700; cursor: pointer; white-space: nowrap; }
+.btn.ghost { background: var(--surface-2); color: var(--fg); }
+.btn.dark { background: var(--fg); color: var(--bg); }
+.btn.small { padding: 6px 12px; font-size: .82rem; }
+.linkbtn { border: 0; background: none; color: var(--blue); font-weight: 600; cursor: pointer; padding: 4px 0; }
+.linkbtn.muted { color: var(--muted); }
+button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, a:focus-visible { outline: 2.5px solid var(--pink); outline-offset: 2px; }
+input, select, textarea { min-width: 0; padding: 10px 14px; border-radius: 16px; border: 1.5px solid var(--line); background: var(--bg); }
+input[type="text"], input[type="email"], input[type="password"], input[type="search"], input[type="number"], select { border-radius: 999px; }
+textarea { resize: vertical; min-height: 5rem; }
+
+.hero { background: var(--ink); color: var(--on-ink); border-radius: 32px; padding: 24px; display: flex; flex-direction: column; gap: 10px; }
+.hero .big { font-size: 3rem; font-weight: 800; letter-spacing: -.04em; line-height: 1; }
+.chip { align-self: flex-start; background: var(--lime); color: var(--on-lime); border-radius: 999px; padding: 3px 10px; font-size: .8rem; font-weight: 700; }
+.split { display: flex; height: 10px; border-radius: 999px; overflow: hidden; gap: 2px; background: var(--on-ink-2); }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: .8rem; opacity: .9; }
+.legend i { display: inline-block; width: 9px; height: 9px; border-radius: 3px; margin-right: 6px; }
+.kpis { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.kpi { background: var(--surface); border-radius: 22px; padding: 14px; display: flex; flex-direction: column; gap: 4px; }
+.kpi b { font-size: 1.5rem; font-weight: 800; letter-spacing: -.02em; }
+.kpi .s { font-size: .78rem; color: var(--muted); }
+.nudge { background: var(--lime-soft); border-radius: 22px; padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.kudocard { background: var(--pink-soft); }
+
+.tag { display: inline-block; font-size: .7rem; font-weight: 700; padding: 2px 9px; border-radius: 999px; background: var(--surface-2); color: var(--muted); vertical-align: 2px; margin-left: 6px; white-space: nowrap; }
+.tag.imp-Klein { background: var(--surface-2); }
+.tag.imp-Mittel { background: #e3f0fb; color: #1f6aa8; }
+.tag.imp-Groß { background: var(--pink-soft); color: var(--pink); }
+.tag.imp-Unternehmens-weit { background: var(--lime); color: var(--on-lime); }
+.tag.gtag { background: transparent; border: 1.5px solid var(--line); }
+
+.item { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 10px; padding: 12px 0; border-top: 1px solid var(--line); }
+.item:first-child { border-top: 0; }
+.item .d { grid-column: 1 / -1; font-size: .86rem; color: var(--muted); }
+.item .meta { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: .8rem; color: var(--muted); }
+.item .meta .tag { margin-left: 0; }
+.star { border: 0; background: none; cursor: pointer; font-size: 1.15rem; line-height: 1; padding: 2px; color: var(--line); }
+.star[aria-pressed="true"] { color: #e8a521; }
+.month { padding-top: 14px; }
+.filters { display: flex; flex-wrap: wrap; gap: 8px; }
+.filters input[type="search"] { flex: 1 1 12rem; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chips button { border: 1.5px solid var(--line); background: var(--surface); border-radius: 999px; padding: 5px 12px; font-size: .8rem; font-weight: 600; cursor: pointer; }
+.chips button[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+
+.bar { height: 10px; background: var(--surface-2); border-radius: 999px; overflow: hidden; }
+.bar .fill { height: 100%; background: var(--blue); border-radius: 999px; }
+.bar .fill.done { background: var(--ok); }
+.goal { display: flex; flex-direction: column; gap: 8px; padding: 14px 0; border-top: 1px solid var(--line); }
+.goal:first-child { border-top: 0; padding-top: 0; }
+.quote { font-size: 1.02rem; }
+.quote::before { content: "„"; } .quote::after { content: "“"; }
+.cat { display: flex; flex-direction: column; gap: 6px; }
+
+/* Dialoge */
+dialog { border: 0; border-radius: var(--r); padding: 0; width: min(36rem, calc(100vw - 24px)); background: var(--surface); color: var(--fg); box-shadow: 0 24px 60px rgba(0,0,0,.25); }
+dialog::backdrop { background: rgba(14,14,16,.45); }
+dialog form { padding: 22px; display: flex; flex-direction: column; gap: 12px; max-height: 88vh; overflow: auto; }
+.field { display: flex; flex-direction: column; gap: 5px; }
+.field > span { font-size: .8rem; font-weight: 600; color: var(--muted); }
+.two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; }
+.check { display: flex; align-items: center; gap: 8px; font-size: .9rem; }
+.check input { width: 18px; height: 18px; }
+.goalpick { display: flex; flex-direction: column; gap: 6px; }
+
+.toast { position: fixed; left: 50%; bottom: calc(88px + env(safe-area-inset-bottom)); transform: translateX(-50%); background: var(--fg); color: var(--bg); border-radius: 14px; padding: 12px 16px; font-size: .9rem; z-index: 20; max-width: calc(100vw - 32px); }
+.login { max-width: 26rem; margin: 10vh auto 0; }
+
+/* Navigation */
+.tabs { position: fixed; left: 0; right: 0; bottom: 0; background: var(--surface); border-top: 1px solid var(--line); padding-bottom: env(safe-area-inset-bottom); z-index: 5; }
+.tabs nav { max-width: 32rem; margin-inline: auto; display: grid; grid-template-columns: repeat(5, 1fr); }
+.tab { border: 0; background: none; font: 600 .7rem var(--font); color: var(--muted); padding: 9px 2px 11px; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; }
+.tab svg { width: 22px; height: 22px; }
+.tab[aria-selected="true"] { color: var(--fg); }
+.tab[aria-selected="true"] svg { color: var(--pink); }
+.brand { display: none; }
+
+@media (min-width: 640px) {
+  .app { max-width: 48rem; }
+  .kpis { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .grid.g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 960px) {
+  body { font-size: 16px; }
+  .tabs { top: 0; right: auto; width: 236px; border-top: 0; border-right: 1px solid var(--line); padding: 28px 16px; display: flex; flex-direction: column; gap: 28px; }
+  .brand { display: block; padding: 0 10px; }
+  .brand b { font-size: 1.6rem; font-weight: 800; letter-spacing: -.03em; display: block; }
+  .tabs nav { grid-template-columns: 1fr; gap: 4px; max-width: none; margin: 0; }
+  .tab { flex-direction: row; justify-content: flex-start; gap: 12px; padding: 11px 14px; border-radius: 999px; font-size: .95rem; }
+  .tab[aria-selected="true"] { background: var(--lime); color: var(--on-lime); }
+  .tab[aria-selected="true"] svg { color: var(--on-lime); }
+  .app { max-width: none; margin-left: 236px; padding: 28px 40px 48px; gap: 22px; }
+  .app > * { width: 100%; max-width: 1200px; margin-inline: auto; }
+  .top h1 { font-size: 2.4rem; }
+  .card { padding: 26px; }
+  .hero { padding: 32px; } .hero .big { font-size: 4rem; }
+  .grid.g75 { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+  .grid.g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .vhead h2 { font-size: 1.9rem; }
+  .toast { bottom: 28px; }
+}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <header class="top">
+    <div><div class="label" id="stand">Lädt …</div><h1><span class="hl-b">Gre</span>vo</h1></div>
+    <div class="topacts" id="topacts" hidden><button class="linkbtn muted" id="logout" type="button">Abmelden</button><button class="btn" id="addbtn" type="button">+ Erfolg</button></div>
+  </header>
+
+  <!-- Anmelden -->
+  <div class="card login" id="login" hidden>
+    <h2 id="logintitle">Anmelden</h2>
+    <p class="muted" id="logintext">Mit deiner E-Mail-Adresse und deinem Passwort.</p>
+    <form id="loginform" class="field" style="gap:10px">
+      <input type="email" id="lmail" placeholder="E-Mail" autocomplete="username" required aria-label="E-Mail">
+      <input type="password" id="lpass" placeholder="Passwort" autocomplete="current-password" required aria-label="Passwort">
+      <button class="btn" type="submit" id="lsubmit">Anmelden</button>
+    </form>
+    <button class="linkbtn" id="forgot" type="button">Passwort vergessen?</button>
+  </div>
+
+  <!-- Übersicht -->
+  <section class="view" id="v-home" hidden>
+    <div class="grid g75">
+      <div class="hero">
+        <div class="label" style="color:inherit;opacity:.75" id="heroyear">Dein Jahr</div>
+        <div class="big" id="herobig">0</div>
+        <span class="chip" id="herochip"></span>
+        <div class="split" id="herosplit" aria-hidden="true"></div>
+        <div class="legend" id="herolegend"></div>
+      </div>
+      <div class="card kudocard" id="kudohome">
+        <div class="label">Zuletzt gelobt</div>
+        <p class="quote" id="kudotext"></p>
+        <span class="muted" id="kudofrom"></span>
+      </div>
+    </div>
+    <div class="nudge" id="nudge" hidden><span id="nudgetext"></span><button class="btn dark small" type="button" id="nudgebtn">Eintragen</button></div>
+    <div class="kpis" id="homekpis"></div>
+    <div class="grid g2">
+      <div class="card"><div class="row"><h2>Ziele</h2><button class="linkbtn" data-go="goals" type="button">Alle →</button></div><div id="homegoals"></div></div>
+      <div class="card"><div class="row"><h2>Zuletzt geschafft</h2><button class="linkbtn" data-go="list" type="button">Alle →</button></div><div id="homelatest"></div></div>
+    </div>
+  </section>
+
+  <!-- Erfolge -->
+  <section class="view" id="v-list" hidden>
+    <div class="vhead"><span class="label">Erfolge</span><h2>Was ich geschafft habe</h2></div>
+    <div class="card">
+      <div class="filters">
+        <input type="search" id="fsearch" placeholder="Suchen …" aria-label="Suchen">
+        <select id="fyear" aria-label="Jahr"></select>
+        <select id="fimpact" aria-label="Wirkung"></select>
+        <button class="btn ghost small" id="fhigh" type="button" aria-pressed="false">★ Nur Highlights</button>
+      </div>
+      <div class="chips" id="fcats" role="group" aria-label="Kategorie"></div>
+      <div id="list"></div>
+    </div>
+  </section>
+
+  <!-- Ziele -->
+  <section class="view" id="v-goals" hidden>
+    <div class="row"><div class="vhead"><span class="label">Ziele</span><h2>Wo ich hin will</h2></div><button class="btn" id="addgoal" type="button">+ Ziel</button></div>
+    <div class="grid g2" id="goals"></div>
+  </section>
+
+  <!-- Kudos -->
+  <section class="view" id="v-kudos" hidden>
+    <div class="row"><div class="vhead"><span class="label">Kudos</span><h2>Was andere über mich sagen</h2></div><button class="btn" id="addkudo" type="button">+ Kudos</button></div>
+    <div class="grid g2" id="kudos"></div>
+  </section>
+
+  <!-- Rückblick -->
+  <section class="view" id="v-review" hidden>
+    <div class="row"><div class="vhead"><span class="label">Jahresrückblick</span><h2 id="rtitle">Mein Jahr</h2></div>
+      <div class="topacts"><select id="ryear" aria-label="Jahr"></select><button class="btn" id="rcopy" type="button">Als Text kopieren</button></div></div>
+    <p class="muted">Für Mitarbeitergespräch, Bewerbung oder einfach zum Stolzsein. „Als Text kopieren“ legt eine fertige Liste in die Zwischenablage.</p>
+    <div class="kpis" id="rkpis"></div>
+    <div class="grid g2">
+      <div class="card"><h2>Nach Bereich</h2><div class="cat" id="rcats"></div></div>
+      <div class="card"><h2>Nach Wirkung</h2><div class="cat" id="rimpact"></div></div>
+    </div>
+    <div class="card"><h2>Highlights und große Wirkung</h2><div id="rhigh"></div></div>
+  </section>
+</div>
+
+<div class="tabs" id="tabs" hidden><div class="brand"><span class="label">Meine Erfolge</span><b><span class="hl-p">Gre</span>vo</b></div><nav role="tablist" aria-label="Bereiche">
+  <button class="tab" role="tab" data-v="home" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/></svg>Übersicht</button>
+  <button class="tab" role="tab" data-v="list" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></svg>Erfolge</button>
+  <button class="tab" role="tab" data-v="goals" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg>Ziele</button>
+  <button class="tab" role="tab" data-v="kudos" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 21l1.9-5.4A8 8 0 1 1 21 12z"/></svg>Kudos</button>
+  <button class="tab" role="tab" data-v="review" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Rückblick</button>
+</nav></div>
+
+<!-- Erfolg bearbeiten -->
+<dialog id="dlgAch"><form method="dialog" id="fAch">
+  <h2 id="dlgAchTitle">Neuer Erfolg</h2>
+  <label class="field"><span>Was hast du geschafft?</span><input type="text" id="aTitle" required maxlength="200"></label>
+  <div class="two">
+    <label class="field"><span>Datum</span><input type="date" id="aDate" required></label>
+    <label class="field"><span>Bereich</span><select id="aCat"></select></label>
+  </div>
+  <label class="field"><span>Wirkung</span><select id="aImpact"></select></label>
+  <label class="field"><span>Was genau, und warum war es wichtig? (optional)</span><textarea id="aDesc" maxlength="4000"></textarea></label>
+  <label class="field"><span>Stichworte, mit Komma getrennt (optional)</span><input type="text" id="aTags" placeholder="z. B. KI, Team, Kunde"></label>
+  <label class="check"><input type="checkbox" id="aHigh"> ★ Highlight, gehört in jeden Rückblick</label>
+  <div class="field" id="aGoalsWrap"><span>Zahlt ein auf</span><div class="goalpick" id="aGoals"></div></div>
+  <div class="field" id="aFilesWrap" hidden><span>Anhänge</span><div id="aFiles"></div><input type="file" id="aUpload" aria-label="Datei anhängen"></div>
+  <div class="row"><button class="linkbtn muted" type="button" id="aDelete" hidden>Löschen</button><span></span>
+    <div class="topacts"><button class="btn ghost" value="cancel" formnovalidate>Abbrechen</button><button class="btn" id="aSave" value="save">Speichern</button></div></div>
+</form></dialog>
+
+<!-- Ziel bearbeiten -->
+<dialog id="dlgGoal"><form method="dialog" id="fGoal">
+  <h2 id="dlgGoalTitle">Neues Ziel</h2>
+  <label class="field"><span>Ziel</span><input type="text" id="gTitle" required maxlength="200"></label>
+  <label class="field"><span>Beschreibung (optional)</span><textarea id="gDesc" maxlength="2000"></textarea></label>
+  <div class="two">
+    <label class="field"><span>Bereich</span><select id="gCat"></select></label>
+    <label class="field"><span>Wie viele Erfolge bis zum Ziel?</span><input type="number" id="gCount" min="1" max="100"></label>
+  </div>
+  <div class="two">
+    <label class="field"><span>Bis wann? (optional)</span><input type="date" id="gDate"></label>
+    <label class="field"><span>Status</span><select id="gStatus"><option value="active">Aktiv</option><option value="paused">Pausiert</option><option value="completed">Erreicht</option></select></label>
+  </div>
+  <div class="row"><button class="linkbtn muted" type="button" id="gDelete" hidden>Löschen</button><span></span>
+    <div class="topacts"><button class="btn ghost" value="cancel" formnovalidate>Abbrechen</button><button class="btn" value="save">Speichern</button></div></div>
+</form></dialog>
+
+<!-- Kudos bearbeiten -->
+<dialog id="dlgKudo"><form method="dialog" id="fKudo">
+  <h2 id="dlgKudoTitle">Neue Kudos</h2>
+  <label class="field"><span>Von wem?</span><input type="text" id="kFrom" required maxlength="120"></label>
+  <label class="field"><span>Was wurde gesagt?</span><textarea id="kText" required maxlength="2000"></textarea></label>
+  <div class="two">
+    <label class="field"><span>Datum</span><input type="date" id="kDate" required></label>
+    <label class="field"><span>Zu welchem Ziel? (optional)</span><select id="kGoal"></select></label>
+  </div>
+  <label class="field"><span>Zusammenhang (optional)</span><input type="text" id="kContext" maxlength="300" placeholder="z. B. Teams-Nachricht nach dem Release"></label>
+  <div class="row"><button class="linkbtn muted" type="button" id="kDelete" hidden>Löschen</button><span></span>
+    <div class="topacts"><button class="btn ghost" value="cancel" formnovalidate>Abbrechen</button><button class="btn" value="save">Speichern</button></div></div>
+</form></dialog>
+
+<div class="toast" id="toast" hidden></div>
+
+<script src="config.js"></script>
+<script>
+(() => {
+  const CATS = ['Technisch', 'Leadership', 'Produkt', 'Prozesse', 'Kommunikation', 'Sonstiges'];
+  const IMPACTS = ['Klein', 'Mittel', 'Groß', 'Unternehmens-weit'];
+  const IMPACT_COLOR = { Klein: 'rgba(255,255,255,.35)', Mittel: 'var(--blue)', Groß: 'var(--pink)', 'Unternehmens-weit': 'var(--lime)' };
+  const MONTHS = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+
+  const $ = (id) => document.getElementById(id);
+  const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+  const clear = (id) => { const e = $(id); e.textContent = ''; return e; };
+  const store = { get(k, d) { try { const v = localStorage.getItem('grevo:' + k); return v ? JSON.parse(v) : d; } catch (e) { return d; } }, set(k, v) { try { localStorage.setItem('grevo:' + k, JSON.stringify(v)); } catch (e) {} } };
+  const today = () => new Date().toISOString().slice(0, 10);
+  const dDate = (d) => new Intl.DateTimeFormat('de-DE', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(d + 'T12:00:00'));
+  const dShort = (d) => new Intl.DateTimeFormat('de-DE', { day: 'numeric', month: 'short' }).format(new Date(d + 'T12:00:00'));
+  const nanoid = () => { const a = 'useandom-26T198340PX75pxJACKVERYMINDBUSHWOLF_GQZbfghjklqvwyzrict'; const r = crypto.getRandomValues(new Uint8Array(21)); return Array.from(r, (b) => a[b & 63]).join(''); };
+  const toast = (msg, ms = 3000) => { const t = $('toast'); t.textContent = msg; t.hidden = false; clearTimeout(toast.h); toast.h = setTimeout(() => { t.hidden = true; }, ms); };
+  const kpi = (box, label, value, sub, cls) => { const k = el('div', 'kpi'); k.append(el('span', 'label', label), el('b', cls || '', value)); if (sub) k.append(el('span', 's', sub)); box.appendChild(k); };
+  const opts = (sel, list, first) => { sel.textContent = ''; if (first) { const o = el('option', '', first[1]); o.value = first[0]; sel.appendChild(o); } list.forEach((v) => { const o = el('option', '', Array.isArray(v) ? v[1] : v); o.value = Array.isArray(v) ? v[0] : v; sel.appendChild(o); }); };
+
+  let sb = null, user = null;
+  let D = { ach: [], goals: [], kudos: [], links: [], files: [] };
+  const F = { search: '', year: 'all', impact: '', cat: '', high: false };
+
+  const chk = (res) => { if (res.error) throw new Error(res.error.message); return res.data; };
+  async function load() {
+    const [a, g, k, l, f] = await Promise.all([
+      sb.from('achievements').select('*').order('date', { ascending: false }),
+      sb.from('goals').select('*').order('created_at'),
+      sb.from('kudos').select('*').order('date', { ascending: false }),
+      sb.from('goal_achievement_links').select('goal_id, achievement_id'),
+      sb.from('attachments').select('*').order('created_at'),
+    ]);
+    D = { ach: chk(a), goals: chk(g), kudos: chk(k), links: chk(l), files: chk(f) };
+    render();
+  }
+  async function act(fn, msg) {
+    try { await fn(); await load(); if (msg) toast(msg); } catch (e) { toast('Das hat nicht geklappt: ' + e.message, 6000); }
+  }
+  const goalsOf = (aid) => D.links.filter((l) => l.achievement_id === aid).map((l) => D.goals.find((g) => g.id === l.goal_id)).filter(Boolean);
+  const achOf = (gid) => D.links.filter((l) => l.goal_id === gid).map((l) => D.ach.find((a) => a.id === l.achievement_id)).filter(Boolean);
+  const years = () => [...new Set(D.ach.map((a) => a.year || +a.date.slice(0, 4)))].sort((a, b) => b - a);
+
+  /* ---------------- Übersicht ---------------- */
+  function renderHome() {
+    const y = new Date().getFullYear(), mine = D.ach.filter((a) => (a.year || +a.date.slice(0, 4)) === y);
+    $('heroyear').textContent = `Dein Jahr ${y}`;
+    $('herobig').textContent = `${mine.length} ${mine.length === 1 ? 'Erfolg' : 'Erfolge'}`;
+    const d30 = new Date(Date.now() - 30 * 864e5).toISOString().slice(0, 10), recent = D.ach.filter((a) => a.date >= d30).length;
+    $('herochip').textContent = recent ? `+${recent} in den letzten 30 Tagen` : 'Zeit für den nächsten Eintrag';
+    const sp = clear('herosplit'), lg = clear('herolegend');
+    IMPACTS.forEach((imp) => { const n = mine.filter((a) => a.impact === imp).length; if (!n) return; const s = el('div'); s.style.flex = n; s.style.background = IMPACT_COLOR[imp]; sp.appendChild(s); const l = el('span'); const i = el('i'); i.style.background = IMPACT_COLOR[imp]; l.append(i, document.createTextNode(`${imp} ${n}`)); lg.appendChild(l); });
+    const last = D.ach[0], days = last ? Math.floor((Date.now() - new Date(last.date + 'T12:00:00')) / 864e5) : null;
+    $('nudge').hidden = !(days === null || days >= 14);
+    $('nudgetext').textContent = days === null ? 'Noch nichts eingetragen. Was lief zuletzt richtig gut?' : `Seit ${days} Tagen nichts eingetragen. Was lief zuletzt gut, auch Kleines zählt?`;
+    const k = clear('homekpis');
+    kpi(k, 'Highlights', String(mine.filter((a) => a.is_highlight).length), `im Jahr ${y}`);
+    kpi(k, 'Große Wirkung', String(mine.filter((a) => a.impact === 'Groß' || a.impact === 'Unternehmens-weit').length), 'groß oder unternehmensweit');
+    kpi(k, 'Kudos', String(D.kudos.filter((x) => (x.year || +x.date.slice(0, 4)) === y).length), `im Jahr ${y}`);
+    const reached = D.goals.filter((g) => g.status === 'completed' || (g.target_count && achOf(g.id).length >= g.target_count)).length;
+    kpi(k, 'Ziele erreicht', `${reached} von ${D.goals.length}`, 'oder Zielzahl geschafft', reached ? 'good' : '');
+    const hg = clear('homegoals');
+    if (!D.goals.length) hg.appendChild(el('p', 'muted', 'Noch keine Ziele. Leg eins an, dann siehst du hier den Fortschritt.'));
+    D.goals.filter((g) => g.status !== 'paused').forEach((g) => hg.appendChild(goalProgress(g, false)));
+    const hl = clear('homelatest');
+    if (!D.ach.length) hl.appendChild(el('p', 'muted', 'Noch keine Erfolge.'));
+    D.ach.slice(0, 5).forEach((a) => hl.appendChild(achItem(a, true)));
+    const kd = D.kudos[0];
+    $('kudohome').hidden = !kd;
+    if (kd) { $('kudotext').textContent = kd.text; $('kudofrom').textContent = `${kd.from} · ${dDate(kd.date)}`; }
+  }
+
+  function goalProgress(g, detail) {
+    const box = el('div', 'goal'), linked = achOf(g.id), n = linked.length, target = g.target_count || 0;
+    const done = g.status === 'completed' || (target && n >= target);
+    const head = el('div', 'row'); const t = el('h3', '', g.title);
+    t.appendChild(el('span', 'tag', g.category || 'Sonstiges'));
+    if (g.status === 'paused') t.appendChild(el('span', 'tag', 'pausiert'));
+    head.append(t, el('span', done ? 'good' : 'muted', target ? `${n} / ${target}${done ? ' ✓' : ''}` : `${n} Erfolge`));
+    box.appendChild(head);
+    if (target) { const b = el('div', 'bar'); const f = el('div', 'fill' + (done ? ' done' : '')); f.style.width = Math.min(100, n / target * 100) + '%'; b.appendChild(f); box.appendChild(b); }
+    if (detail) {
+      if (g.description) box.appendChild(el('p', 'muted', g.description));
+      const meta = el('span', 'muted', [g.target_date ? `bis ${dDate(g.target_date)}` : null, `${D.kudos.filter((k) => k.goal_id === g.id).length} Kudos`].filter(Boolean).join(' · '));
+      box.appendChild(meta);
+      if (linked.length) { const l = el('div'); linked.slice(0, 6).forEach((a) => l.appendChild(el('div', 'muted', `· ${a.title} (${dShort(a.date)})`))); box.appendChild(l); }
+      const acts = el('div', 'row'); const e = el('button', 'linkbtn', 'Bearbeiten'); e.type = 'button'; e.addEventListener('click', () => openGoal(g));
+      acts.append(e); if (done && g.status !== 'completed') { const c = el('button', 'btn small', 'Als erreicht markieren'); c.type = 'button'; c.addEventListener('click', () => act(() => sb.from('goals').update({ status: 'completed' }).eq('id', g.id).then(chk), 'Ziel erreicht. Stark!')); acts.append(c); }
+      box.appendChild(acts);
+    }
+    return box;
+  }
+
+  function achItem(a, compact) {
+    const r = el('div', 'item');
+    const t = el('h3', '', a.title);
+    const star = el('button', 'star', '★'); star.type = 'button'; star.setAttribute('aria-pressed', !!a.is_highlight); star.setAttribute('aria-label', 'Highlight');
+    star.addEventListener('click', (ev) => { ev.stopPropagation(); act(() => sb.from('achievements').update({ is_highlight: !a.is_highlight }).eq('id', a.id).then(chk)); });
+    r.append(t, star);
+    const meta = el('div', 'meta'); meta.append(el('span', '', dDate(a.date)), el('span', 'tag', a.category), el('span', `tag imp-${a.impact}`, a.impact));
+    goalsOf(a.id).forEach((g) => meta.appendChild(el('span', 'tag gtag', '◎ ' + g.title)));
+    const nf = D.files.filter((f) => f.achievement_id === a.id).length; if (nf) meta.appendChild(el('span', '', `📎 ${nf}`));
+    r.appendChild(meta);
+    if (!compact && a.description) r.appendChild(el('span', 'd', a.description));
+    if (!compact && (a.tags || []).length) r.appendChild(el('span', 'd', (a.tags || []).map((x) => '#' + x).join(' ')));
+    r.style.cursor = 'pointer'; r.addEventListener('click', () => openAch(a));
+    return r;
+  }
+
+  /* ---------------- Erfolge ---------------- */
+  function renderList() {
+    opts($('fyear'), years().map((y) => [String(y), String(y)]), ['all', 'Alle Jahre']); $('fyear').value = F.year;
+    opts($('fimpact'), IMPACTS, ['', 'Jede Wirkung']); $('fimpact').value = F.impact;
+    $('fhigh').setAttribute('aria-pressed', F.high);
+    const cb = clear('fcats');
+    [['', 'Alle'], ...CATS.map((c) => [c, c])].forEach(([v, l]) => { const b = el('button', '', l); b.type = 'button'; b.setAttribute('aria-pressed', F.cat === v); b.addEventListener('click', () => { F.cat = v; renderList(); }); cb.appendChild(b); });
+    const q = F.search.toLowerCase();
+    const items = D.ach.filter((a) => (F.year === 'all' || String(a.year || a.date.slice(0, 4)) === F.year) && (!F.impact || a.impact === F.impact) && (!F.cat || a.category === F.cat) && (!F.high || a.is_highlight)
+      && (!q || [a.title, a.description, ...(a.tags || [])].join(' ').toLowerCase().includes(q)));
+    const box = clear('list');
+    if (!items.length) { box.appendChild(el('p', 'muted', D.ach.length ? 'Nichts gefunden. Filter lockern?' : 'Noch keine Erfolge. Oben auf „+ Erfolg“ tippen.')); return; }
+    let cur = null, group = null;
+    items.forEach((a) => {
+      const m = a.date.slice(0, 7);
+      if (m !== cur) { cur = m; const h = el('div', 'label month', `${MONTHS[+m.slice(5) - 1]} ${m.slice(0, 4)}`); box.appendChild(h); group = el('div'); box.appendChild(group); }
+      group.appendChild(achItem(a, false));
+    });
+  }
+  $('fsearch').addEventListener('input', (e) => { F.search = e.target.value; renderList(); });
+  $('fyear').addEventListener('change', (e) => { F.year = e.target.value; renderList(); });
+  $('fimpact').addEventListener('change', (e) => { F.impact = e.target.value; renderList(); });
+  $('fhigh').addEventListener('click', () => { F.high = !F.high; renderList(); });
+
+  /* ---------------- Ziele & Kudos ---------------- */
+  function renderGoals() {
+    const box = clear('goals');
+    if (!D.goals.length) { const c = el('div', 'card'); c.appendChild(el('p', 'muted', 'Noch keine Ziele. Ziele helfen, Erfolge einzuordnen: Woran arbeitest du dieses Jahr?')); box.appendChild(c); return; }
+    const order = { active: 0, paused: 1, completed: 2 };
+    D.goals.slice().sort((a, b) => order[a.status] - order[b.status]).forEach((g) => { const c = el('div', 'card'); c.appendChild(goalProgress(g, true)); box.appendChild(c); });
+  }
+  function renderKudos() {
+    const box = clear('kudos');
+    if (!D.kudos.length) { const c = el('div', 'card'); c.appendChild(el('p', 'muted', 'Noch keine Kudos. Lob aus Mails, Chats oder Gesprächen hier sammeln, das trägt an schlechten Tagen.')); box.appendChild(c); return; }
+    D.kudos.forEach((k) => {
+      const c = el('div', 'card kudocard'); c.appendChild(el('p', 'quote', k.text));
+      const g = D.goals.find((x) => x.id === k.goal_id);
+      c.appendChild(el('span', 'muted', [k.from, dDate(k.date), k.context, g ? '◎ ' + g.title : null].filter(Boolean).join(' · ')));
+      const e = el('button', 'linkbtn', 'Bearbeiten'); e.type = 'button'; e.style.alignSelf = 'flex-start'; e.addEventListener('click', () => openKudo(k)); c.appendChild(e);
+      box.appendChild(c);
+    });
+  }
+
+  /* ---------------- Rückblick ---------------- */
+  function renderReview() {
+    const ys = years(); if (!ys.length) ys.push(new Date().getFullYear());
+    const sel = $('ryear'); const keep = sel.value; opts(sel, ys.map((y) => [String(y), String(y)])); sel.value = keep && ys.map(String).includes(keep) ? keep : String(ys[0]);
+    const y = +sel.value, mine = D.ach.filter((a) => (a.year || +a.date.slice(0, 4)) === y);
+    $('rtitle').textContent = `Mein Jahr ${y}`;
+    const k = clear('rkpis');
+    kpi(k, 'Erfolge', String(mine.length)); kpi(k, 'Highlights', String(mine.filter((a) => a.is_highlight).length));
+    kpi(k, 'Unternehmensweit', String(mine.filter((a) => a.impact === 'Unternehmens-weit').length)); kpi(k, 'Kudos', String(D.kudos.filter((x) => (x.year || +x.date.slice(0, 4)) === y).length));
+    const bars = (id, keys, field) => { const box = clear(id); const max = Math.max(1, ...keys.map((c) => mine.filter((a) => a[field] === c).length)); keys.forEach((c) => { const n = mine.filter((a) => a[field] === c).length; if (!n) return; const r = el('div', 'row'); r.append(el('span', '', c), el('span', 'muted', String(n))); const b = el('div', 'bar'); const f = el('div', 'fill'); f.style.width = (n / max * 100) + '%'; b.appendChild(f); box.append(r, b); }); if (!mine.length) box.appendChild(el('p', 'muted', 'Keine Einträge.')); };
+    bars('rcats', CATS, 'category'); bars('rimpact', IMPACTS, 'impact');
+    const hb = clear('rhigh'); const top = mine.filter((a) => a.is_highlight || a.impact === 'Groß' || a.impact === 'Unternehmens-weit');
+    if (!top.length) hb.appendChild(el('p', 'muted', 'Markier wichtige Erfolge mit ★, dann landen sie hier.'));
+    top.forEach((a) => hb.appendChild(achItem(a, false)));
+  }
+  $('ryear').addEventListener('change', renderReview);
+  $('rcopy').addEventListener('click', async () => {
+    const y = +$('ryear').value, mine = D.ach.filter((a) => (a.year || +a.date.slice(0, 4)) === y).slice().sort((a, b) => a.date.localeCompare(b.date));
+    const lines = [`# Meine Erfolge ${y}`, ''];
+    const hi = mine.filter((a) => a.is_highlight);
+    if (hi.length) { lines.push('## Highlights'); hi.forEach((a) => lines.push(`- **${a.title}** (${dShort(a.date)}, ${a.impact})${a.description ? ': ' + a.description : ''}`)); lines.push(''); }
+    CATS.forEach((c) => { const xs = mine.filter((a) => a.category === c); if (!xs.length) return; lines.push(`## ${c}`); xs.forEach((a) => lines.push(`- ${a.title} (${dShort(a.date)}, Wirkung: ${a.impact})${a.description ? ': ' + a.description : ''}`)); lines.push(''); });
+    const gs = D.goals; if (gs.length) { lines.push('## Ziele'); gs.forEach((g) => lines.push(`- ${g.title}: ${achOf(g.id).length}${g.target_count ? ' von ' + g.target_count : ''} Erfolge${g.status === 'completed' ? ' (erreicht)' : ''}`)); lines.push(''); }
+    const ks = D.kudos.filter((x) => (x.year || +x.date.slice(0, 4)) === y); if (ks.length) { lines.push('## Feedback'); ks.forEach((x) => lines.push(`- „${x.text}“ – ${x.from} (${dShort(x.date)})`)); }
+    const text = lines.join('\n');
+    try { await navigator.clipboard.writeText(text); toast('Liegt in der Zwischenablage. Einfach einfügen.'); }
+    catch (e) { const blob = new Blob([text], { type: 'text/markdown' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `erfolge-${y}.md`; a.click(); toast('Als Datei heruntergeladen.'); }
+  });
+
+  /* ---------------- Dialoge ---------------- */
+  let editA = null;
+  function openAch(a) {
+    editA = a || null;
+    $('dlgAchTitle').textContent = a ? 'Erfolg bearbeiten' : 'Neuer Erfolg';
+    opts($('aCat'), CATS); opts($('aImpact'), IMPACTS);
+    $('aTitle').value = a ? a.title : ''; $('aDate').value = a ? a.date : today(); $('aCat').value = a ? a.category : store.get('lastCat', 'Technisch');
+    $('aImpact').value = a ? a.impact : 'Mittel'; $('aDesc').value = a ? (a.description || '') : ''; $('aTags').value = a ? (a.tags || []).join(', ') : ''; $('aHigh').checked = !!(a && a.is_highlight);
+    const gp = clear('aGoals'); const linked = a ? goalsOf(a.id).map((g) => g.id) : [];
+    D.goals.filter((g) => g.status !== 'completed' || linked.includes(g.id)).forEach((g) => { const l = el('label', 'check'); const c = el('input'); c.type = 'checkbox'; c.value = g.id; c.checked = linked.includes(g.id); l.append(c, document.createTextNode(g.title)); gp.appendChild(l); });
+    $('aGoalsWrap').hidden = !gp.children.length;
+    $('aDelete').hidden = !a; $('aFilesWrap').hidden = !a;
+    if (a) renderFiles(a);
+    $('dlgAch').showModal(); $('aTitle').focus();
+  }
+  function renderFiles(a) {
+    const box = clear('aFiles'); const fs = D.files.filter((f) => f.achievement_id === a.id);
+    if (!fs.length) box.appendChild(el('span', 'muted', 'Noch keine. Screenshot, Mail oder Präsentation anhängen.'));
+    fs.forEach((f) => { const r = el('div', 'row'); const o = el('button', 'linkbtn', '📎 ' + f.file_name); o.type = 'button';
+      o.addEventListener('click', async () => { const { data, error } = await sb.storage.from('attachments').createSignedUrl(f.storage_path, 300); if (error) return toast(error.message); window.open(data.signedUrl, '_blank', 'noopener'); });
+      const d = el('button', 'linkbtn muted', 'Entfernen'); d.type = 'button';
+      d.addEventListener('click', () => act(async () => { await sb.storage.from('attachments').remove([f.storage_path]); await sb.from('attachments').delete().eq('id', f.id).then(chk); }).then(() => renderFiles(a)));
+      r.append(o, d); box.appendChild(r); });
+  }
+  $('aUpload').addEventListener('change', async (ev) => {
+    const file = ev.target.files[0]; if (!file || !editA) return;
+    if (file.size > 20 * 1024 * 1024) { toast('Höchstens 20 MB pro Datei.'); return; }
+    const id = nanoid(), path = `${user.id}/${editA.id}/${id}-${file.name.replace(/[^\w.\-]+/g, '_')}`;
+    await act(async () => { const up = await sb.storage.from('attachments').upload(path, file); if (up.error) throw up.error;
+      await sb.from('attachments').insert({ id, achievement_id: editA.id, user_id: user.id, file_name: file.name, file_type: file.type || 'application/octet-stream', file_size: file.size, storage_path: path }).then(chk); }, 'Angehängt.');
+    ev.target.value = ''; renderFiles(editA);
+  });
+  $('fAch').addEventListener('submit', async (ev) => {
+    if (ev.submitter && ev.submitter.value !== 'save') return;
+    const row = { title: $('aTitle').value.trim(), date: $('aDate').value, year: +$('aDate').value.slice(0, 4), category: $('aCat').value, impact: $('aImpact').value,
+      description: $('aDesc').value.trim() || null, tags: $('aTags').value.split(',').map((t) => t.trim()).filter(Boolean), is_highlight: $('aHigh').checked };
+    if (!row.title || !row.date) return;
+    store.set('lastCat', row.category);
+    const goals = [...$('aGoals').querySelectorAll('input:checked')].map((c) => c.value);
+    const isNew = !editA, id = editA ? editA.id : nanoid();
+    await act(async () => {
+      if (isNew) await sb.from('achievements').insert({ id, user_id: user.id, ...row }).then(chk); else await sb.from('achievements').update(row).eq('id', id).then(chk);
+      const before = D.links.filter((l) => l.achievement_id === id).map((l) => l.goal_id);
+      const add = goals.filter((g) => !before.includes(g)), del = before.filter((g) => !goals.includes(g));
+      if (add.length) await sb.from('goal_achievement_links').insert(add.map((g) => ({ goal_id: g, achievement_id: id, user_id: user.id }))).then(chk);
+      for (const g of del) await sb.from('goal_achievement_links').delete().eq('goal_id', g).eq('achievement_id', id).then(chk);
+    }, isNew ? 'Gespeichert. Gut gemacht!' : 'Gespeichert.');
+  });
+  $('aDelete').addEventListener('click', async () => {
+    if (!editA || !confirm(`„${editA.title}“ wirklich löschen?`)) return;
+    const a = editA; $('dlgAch').close();
+    await act(async () => {
+      const fs = D.files.filter((f) => f.achievement_id === a.id);
+      if (fs.length) { await sb.storage.from('attachments').remove(fs.map((f) => f.storage_path)); await sb.from('attachments').delete().eq('achievement_id', a.id).then(chk); }
+      await sb.from('goal_achievement_links').delete().eq('achievement_id', a.id).then(chk);
+      await sb.from('achievements').delete().eq('id', a.id).then(chk);
+    }, 'Gelöscht.');
+  });
+
+  let editG = null;
+  function openGoal(g) {
+    editG = g || null; $('dlgGoalTitle').textContent = g ? 'Ziel bearbeiten' : 'Neues Ziel'; opts($('gCat'), CATS);
+    $('gTitle').value = g ? g.title : ''; $('gDesc').value = g ? (g.description || '') : ''; $('gCat').value = g ? g.category : 'Technisch';
+    $('gCount').value = g && g.target_count ? g.target_count : ''; $('gDate').value = g && g.target_date ? g.target_date : ''; $('gStatus').value = g ? g.status : 'active';
+    $('gDelete').hidden = !g; $('dlgGoal').showModal(); $('gTitle').focus();
+  }
+  $('fGoal').addEventListener('submit', async (ev) => {
+    if (ev.submitter && ev.submitter.value !== 'save') return;
+    const row = { title: $('gTitle').value.trim(), description: $('gDesc').value.trim(), category: $('gCat').value, target_count: $('gCount').value ? +$('gCount').value : null, target_date: $('gDate').value || null, status: $('gStatus').value };
+    if (!row.title) return;
+    await act(() => (editG ? sb.from('goals').update(row).eq('id', editG.id) : sb.from('goals').insert({ id: nanoid(), user_id: user.id, ...row })).then(chk), 'Ziel gespeichert.');
+  });
+  $('gDelete').addEventListener('click', async () => {
+    if (!editG || !confirm(`Ziel „${editG.title}“ löschen? Die Erfolge bleiben erhalten.`)) return;
+    const g = editG; $('dlgGoal').close();
+    await act(async () => { await sb.from('goal_achievement_links').delete().eq('goal_id', g.id).then(chk); await sb.from('kudos').update({ goal_id: null }).eq('goal_id', g.id).then(chk); await sb.from('goals').delete().eq('id', g.id).then(chk); }, 'Ziel gelöscht.');
+  });
+
+  let editK = null;
+  function openKudo(k) {
+    editK = k || null; $('dlgKudoTitle').textContent = k ? 'Kudos bearbeiten' : 'Neue Kudos';
+    opts($('kGoal'), D.goals.map((g) => [g.id, g.title]), ['', '—']);
+    $('kFrom').value = k ? k.from : ''; $('kText').value = k ? k.text : ''; $('kDate').value = k ? k.date : today(); $('kContext').value = k ? (k.context || '') : ''; $('kGoal').value = k && k.goal_id ? k.goal_id : '';
+    $('kDelete').hidden = !k; $('dlgKudo').showModal(); $('kFrom').focus();
+  }
+  $('fKudo').addEventListener('submit', async (ev) => {
+    if (ev.submitter && ev.submitter.value !== 'save') return;
+    const row = { from: $('kFrom').value.trim(), text: $('kText').value.trim(), date: $('kDate').value, year: +$('kDate').value.slice(0, 4), context: $('kContext').value.trim() || null, goal_id: $('kGoal').value || null };
+    if (!row.from || !row.text) return;
+    await act(() => (editK ? sb.from('kudos').update(row).eq('id', editK.id) : sb.from('kudos').insert({ id: nanoid(), user_id: user.id, ...row })).then(chk), 'Kudos gespeichert. Schön!');
+  });
+  $('kDelete').addEventListener('click', async () => { if (!editK || !confirm('Diese Kudos löschen?')) return; const k = editK; $('dlgKudo').close(); await act(() => sb.from('kudos').delete().eq('id', k.id).then(chk), 'Gelöscht.'); });
+
+  $('addbtn').addEventListener('click', () => openAch(null));
+  $('nudgebtn').addEventListener('click', () => openAch(null));
+  $('addgoal').addEventListener('click', () => openGoal(null));
+  $('addkudo').addEventListener('click', () => openKudo(null));
+
+  /* ---------------- Navigation ---------------- */
+  const views = ['home', 'list', 'goals', 'kudos', 'review'];
+  function show(v) {
+    views.forEach((x) => { $('v-' + x).hidden = x !== v; });
+    document.querySelectorAll('.tab').forEach((t) => t.setAttribute('aria-selected', t.dataset.v === v));
+    store.set('tab', v); window.scrollTo(0, 0);
+  }
+  document.querySelectorAll('.tab').forEach((t) => t.addEventListener('click', () => show(t.dataset.v)));
+  document.querySelectorAll('[data-go]').forEach((b) => b.addEventListener('click', () => show(b.dataset.go)));
+  function render() {
+    $('stand').textContent = `${D.ach.length} Erfolge · ${D.goals.length} Ziele · ${D.kudos.length} Kudos`;
+    renderHome(); renderList(); renderGoals(); renderKudos(); renderReview();
+  }
+
+  /* ---------------- Anmelden ---------------- */
+  let recovery = false;
+  function showLogin(title, text) {
+    views.forEach((x) => { $('v-' + x).hidden = true; }); $('tabs').hidden = true; $('topacts').hidden = true; $('login').hidden = false;
+    $('stand').textContent = 'Erfolge, Ziele, Kudos';
+    $('logintitle').textContent = title || 'Anmelden'; $('logintext').textContent = text || 'Mit deiner E-Mail-Adresse und deinem Passwort.';
+    $('lmail').hidden = recovery; $('lmail').required = !recovery; $('forgot').hidden = recovery;
+    $('lpass').placeholder = recovery ? 'Neues Passwort (mind. 8 Zeichen)' : 'Passwort'; $('lpass').autocomplete = recovery ? 'new-password' : 'current-password';
+    $('lsubmit').textContent = recovery ? 'Passwort speichern' : 'Anmelden';
+  }
+  async function enter(session) {
+    user = session.user; $('login').hidden = true; $('tabs').hidden = false; $('topacts').hidden = false;
+    show(store.get('tab', 'home'));
+    try { await load(); } catch (e) { toast('Konnte die Daten nicht laden: ' + e.message, 6000); }
+  }
+  $('loginform').addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    if (recovery) {
+      if ($('lpass').value.length < 8) { toast('Bitte mindestens 8 Zeichen.'); return; }
+      const { data, error } = await sb.auth.updateUser({ password: $('lpass').value });
+      if (error) { toast(error.message, 6000); return; }
+      recovery = false; toast('Neues Passwort gespeichert.'); const s = await sb.auth.getSession(); enter(s.data.session || { user: data.user }); return;
+    }
+    const { data, error } = await sb.auth.signInWithPassword({ email: $('lmail').value.trim(), password: $('lpass').value });
+    if (error) { toast(error.message === 'Invalid login credentials' ? 'E-Mail oder Passwort stimmt nicht.' : error.message, 6000); return; }
+    $('lpass').value = ''; enter(data.session);
+  });
+  $('forgot').addEventListener('click', async () => {
+    const email = $('lmail').value.trim(); if (!email) { toast('Erst oben die E-Mail eintragen.'); $('lmail').focus(); return; }
+    const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: location.origin + location.pathname });
+    toast(error ? error.message : 'Mail ist unterwegs. Der Link darin führt zurück hierher, dann neues Passwort setzen.', 7000);
+  });
+  $('logout').addEventListener('click', async () => { await sb.auth.signOut(); D = { ach: [], goals: [], kudos: [], links: [], files: [] }; showLogin(); });
+
+  async function start() {
+    if (!window.GREVO) { showLogin('Nicht eingerichtet', 'config.js fehlt.'); return; }
+    try {
+      await new Promise((ok, fail) => { const s = document.createElement('script'); s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.min.js'; s.onload = ok; s.onerror = fail; document.head.appendChild(s); });
+    } catch (e) { showLogin('Keine Verbindung', 'Supabase konnte nicht geladen werden. Bitte Seite neu laden.'); return; }
+    sb = window.supabase.createClient(window.GREVO.url, window.GREVO.key);
+    sb.auth.onAuthStateChange((ev, session) => {
+      if (ev === 'PASSWORD_RECOVERY') { recovery = true; showLogin('Neues Passwort', 'Wähl ein neues Passwort für Grevo.'); }
+    });
+    const { data } = await sb.auth.getSession();
+    if (data.session && !recovery) enter(data.session); else if (!recovery) showLogin();
+  }
+  start();
+})();
+</script>
+</body>
+</html>
