@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Grevo</title>
 <meta name="description" content="Erfolge, Ziele und Kudos festhalten, damit am Jahresende nichts fehlt.">
+<script src="https://tools-hub-topaz-zeta.vercel.app/apps.js" defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap">
@@ -153,7 +154,7 @@ dialog form { padding: 22px; display: flex; flex-direction: column; gap: 12px; m
 <body>
 <div class="app" id="app">
   <header class="top">
-    <div><div class="label" id="stand">Lädt …</div><h1><span class="hl-b">Gre</span>vo</h1></div>
+    <div style="display:flex;align-items:center;gap:12px;min-width:0"><app-switcher></app-switcher><div><div class="label" id="stand">Lädt …</div><h1><span class="hl-b">Gre</span>vo</h1></div></div>
     <div class="topacts" id="topacts" hidden><button class="linkbtn muted" id="logout" type="button">Abmelden</button><button class="btn" id="addbtn" type="button">+ Erfolg</button></div>
   </header>
 
